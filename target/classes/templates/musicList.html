@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>歌单</title>
+</head>
+<body>
+<div style="text-align:center">
+<table border="1" style="margin: auto">
+    <span>
+        当前页码:<span th:text="${page}">1</span>&nbsp;&nbsp;&nbsp;
+        <a th:href="@{'musiclist?singerId='+ ${singerId}+'&page='+${page+1}}">下一页</a>
+    </span>
+    <tr>
+        <th width="80px">序号</th>
+        <th width="220px">歌名</th>
+        <th width="100px">歌手</th>
+        <th width="90px">图片</th>
+        <th width="200px">专辑</th>
+        <th width="70px">时长</th>
+        <th width="90px">点击试听</th>
+    </tr>
+    <tr th:each="music:${musiclist}" height="60px">
+        <td th:text="${musicStat.index+1}">序号</td>
+        <th th:text="${music.musicName}">歌名</th>
+        <td th:text="${music.singerName}">歌手</td>
+        <td><img width="80px" height="80px" th:src="${music.musicPhotoUrl}"></td>
+        <td th:text="${music.album}">专辑</td>
+        <td th:text="${music.musicTime}">时长</td>
+        <td><a th:href="${music.musicUrl}">点击试听</a></td>
+    </tr>
+</table>
+</div>
+</body>
+</html>
