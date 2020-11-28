@@ -6,14 +6,14 @@
 </head>
 <body>
 <div style="text-align:center">
-    <form href="findMusic">
-        请输入歌名<input>
-        <button type="submit">搜索</button>
+    <form action="/search" method="post">
+        总页数：<a style="width: 20px" th:text="${musiclist.sumPage}"></a>&nbsp;&nbsp;&nbsp;
+        当前页：<input style="width: 30px" name="page" th:value="${musiclist.page==null?1:musiclist.page}">
+        <input name="key" placeholder="搜索歌名/歌手/歌单" th:value="${key}">
+        <button>搜索</button>
     </form>
-    <span>
-        当前页码:<span th:text="${page}">1</span>&nbsp;&nbsp;&nbsp;
-        <a th:href="@{'musiclist?singerId='+ ${singerId}+'&page='+${page+1}}">下一页</a>
-    </span>
+    <a th:href="@{'musiclist?page='+ ${musiclist.page==null?1:(musiclist.page)-1}+'&key='+${key}}">上一页</a>
+    <a th:href="@{'musiclist?page='+ ${musiclist.page==null?1:(musiclist.page)+1}+'&page='+${key}}">下一页</a>
 <table border="1" style="margin: auto">
     <tr>
         <th width="80px">序号</th>
@@ -24,16 +24,23 @@
         <th width="70px">时长</th>
         <th width="90px">点击试听</th>
     </tr>
-    <tr th:each="music:${musiclist}" height="60px">
-        <td th:text="${musicStat.index+1}">序号</td>
+    <tr th:each="music:${musiclist.musicList}" height="60px">
+        <td th:text="${musicStat.index+1+((musiclist.page)-1)*10}">序号</td>
         <th th:text="${music.musicName}">歌名</th>
         <td th:text="${music.singerName}">歌手</td>
         <td><img width="80px" height="80px" th:src="${music.musicPhotoUrl}"></td>
         <td th:text="${music.album}">专辑</td>
         <td th:text="${music.musicTime}">时长</td>
-        <td><a th:href="@{'music?rid='+ ${music.id}}">点击试听</a></td>
+        <td><a th:href="@{'musicDetail?rid='+ ${music.id}}">点击试听</a></td>
     </tr>
 </table>
 </div>
 </body>
+<footer>
+    <div style="text-align:center">
+        <br>
+        <span> 网站内容来源于互联网，仅供学习使用！！请勿用于其他用途！！<br>
+        Cheirmin @2020 | <a href="http://www.beian.miit.gov.cn"> 湘ICP备18023941号-1</a></span>
+    </div>
+</footer>
 </html>

@@ -1,12 +1,12 @@
 package com.cheirmin.controller;
 
-import com.cheirmin.pojo.Music;
+import com.cheirmin.pojo.MusicList;
 import com.cheirmin.utils.CrawlerMusicFromKuwo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @Message:
@@ -17,34 +17,39 @@ import java.util.List;
 @Controller
 public class MusicController {
 
-    @GetMapping({"/index", "/", "/index.html"})
-    public String indexPage(){
-        return "index";
-    }
-
-    @GetMapping("musiclist")
-    public String musicList(String singerId,Integer page, Model model){
-        if(page==null){
+    @RequestMapping({"/index", "/", "/index.html","/musiclist","/search"})
+    public String musicList(Integer page, String key, Model model){
+        if (page==null || page<=0 ) {
             page = 1;
         }
 
-        String url ;
+        String url;
         int type = 1;
-        if (singerId != null && !"".equals(singerId) && !"null".equals(singerId)){
-            url = "http://www.kuwo.cn/api/www/artist/artistMusic?artistid="+singerId+"&pn="+page+"&rn=30";
-            type = 2;
+        String key1 = key;
+
+        if(key!=null && !"".equals(key.trim())) {
+            try {
+               key1 = java.net.URLEncoder.encode(key,"utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            url = "http://www.kuwo.cn/api/www/search/searchMusicBykeyWord?key="+key1+"&pn="+page+"&rn=10";
+            type = 3;
         }else {
-            url = "http://www.kuwo.cn/api/www/bang/bang/musicList?bangId=93&pn="+page+"&rn=30";
+            key = "";
+            url = "http://www.kuwo.cn/api/www/bang/bang/musicList?bangId=93&pn="+page+"&rn=10";
         }
 
-        List<Music> music = CrawlerMusicFromKuwo.getMusic(url, type);
-        model.addAttribute("musiclist",music);
-        model.addAttribute("page",page);
-        model.addAttribute("singerId",singerId);
+        MusicList musicList = CrawlerMusicFromKuwo.getMusic(url, type,key1);
+        //当前页数
+        musicList.setPage(page);
+
+        model.addAttribute("musiclist",musicList);
+        model.addAttribute("key",key);
         return "musicList";
     }
 
-    @GetMapping("music")
+    @RequestMapping("musicDetail")
     public String musicList(String rid){
         if(rid==null){
             return null;
