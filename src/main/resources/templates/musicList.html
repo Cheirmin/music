@@ -9,11 +9,11 @@
     <form action="/search" method="post">
         总页数：<a style="width: 20px" th:text="${musiclist.sumPage}"></a>&nbsp;&nbsp;&nbsp;
         当前页：<input style="width: 30px" name="page" th:value="${musiclist.page==null?1:musiclist.page}">
-        <input name="key" placeholder="搜索歌名/歌手/歌单" th:value="${key}">
+        <input name="key" placeholder="搜索歌名/歌手/歌单" th:value="${musiclist.keyWord}">
         <button>搜索</button>
     </form>
-    <a th:href="@{'musiclist?page='+ ${musiclist.page==null?1:(musiclist.page)-1}+'&key='+${key}}">上一页</a>
-    <a th:href="@{'musiclist?page='+ ${musiclist.page==null?1:(musiclist.page)+1}+'&page='+${key}}">下一页</a>
+    <a th:href="@{'musiclist?page='+ ${musiclist.page==null?1:(musiclist.page)-1}+'&key='+${musiclist.keyWord}}">上一页</a>
+    <a th:href="@{'musiclist?page='+ ${musiclist.page==null?1:(musiclist.page)+1}+'&key='+${musiclist.keyWord}}">下一页</a>
 <table border="1" style="margin: auto">
     <tr>
         <th width="80px">序号</th>

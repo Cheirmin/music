@@ -49,7 +49,7 @@ public class CrawlerMusicFromKuwo {
         //存放音乐
         MusicList musicList = new MusicList();
         //获取响应体
-        String body = httpUtil.GetHttp(url,1,key);
+        String body = httpUtil.getHttp(url,1,key);
 
         //json字符串转对象
         Map map = JSON.parseObject(body,Map.class);
@@ -60,9 +60,21 @@ public class CrawlerMusicFromKuwo {
 
         String listName ;
         switch (type){
-            case 1 : listName = "musicList"; sum = (String) data.get("num");break;
+            case 1 :
+                listName = "musicList";
+                if (data ==null ){
+                    return musicList;
+                }
+                sum = (String) data.get("num");
+                break;
             case 2 : listName = "list";break;
-            case 3 : listName = "list";sum = (String) data.get("total");break;
+            case 3 :
+                listName = "list";
+                if (data ==null ){
+                    return musicList;
+                }
+                sum = (String) data.get("total");
+                break;
             default: listName = "musicList";
         }
 

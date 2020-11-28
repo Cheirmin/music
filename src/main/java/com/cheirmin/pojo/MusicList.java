@@ -10,10 +10,19 @@ import java.util.List;
  */
 public class MusicList {
     private List<Music> musicList;
+    private String keyWord;
     private Double sumPage;
     private Integer page;
 
     public MusicList() {
+    }
+
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
     }
 
     public List<Music> getMusicList() {

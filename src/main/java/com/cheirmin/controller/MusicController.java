@@ -43,9 +43,10 @@ public class MusicController {
         MusicList musicList = CrawlerMusicFromKuwo.getMusic(url, type,key1);
         //当前页数
         musicList.setPage(page);
+        musicList.setKeyWord(key);
 
         model.addAttribute("musiclist",musicList);
-        model.addAttribute("key",key);
+
         return "musicList";
     }
 
