@@ -31,7 +31,7 @@
         <td><img width="80px" height="80px" th:src="${music.musicPhotoUrl}"></td>
         <td th:text="${music.album}">专辑</td>
         <td th:text="${music.musicTime}">时长</td>
-        <td><a th:href="${music.musicUrl}">点击试听</a></td>
+        <td><a th:href="@{'music?rid='+ ${music.id}}">点击试听</a></td>
     </tr>
 </table>
 </div>

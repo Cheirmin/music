@@ -8,7 +8,6 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,14 +20,14 @@ import java.util.Map;
 public class CrawlerMusicFromKuwo {
     /**
      * 通过音乐id获取其MP3文件地址
-     * @param rid
-     * @return
+     * @param rid rid
+     * @return return
      */
     public static String getUrlById(String rid){
-        String url = "http://www.kuwo.cn/url?format=mp3&rid="+ rid +"&response=url&type=convert_url3&br=128kmp3&from=web&t=1561517488040";
+        String url = "http://www.kuwo.cn/url?format=mp3&rid="+ rid
+                +"&response=url&type=convert_url3&br=128kmp3&from=web&t=1561517488040";
         try {
             Document document = Jsoup.connect(url).get();
-//            System.out.println(document.select("body").html());
             JSONObject jsonObject = new JSONObject(document.select("body").html());
             return jsonObject.get("url").toString();
         } catch (IOException e) {
@@ -49,10 +48,10 @@ public class CrawlerMusicFromKuwo {
         List<Music> musicList = new ArrayList<>();//存放音乐
 
         //获取响应体
-        String body = httpUtil.GetHttp(url,1);
+        String body = httpUtil.getHttp(url,1);
 
         //json字符串转对象
-        Map<String,Object> map = JSON.parseObject(body,Map.class);
+        Map map = JSON.parseObject(body,Map.class);
         Map<String,Object> data= (Map<String, Object>) map.get("data");
 
         String ss ;
@@ -71,12 +70,10 @@ public class CrawlerMusicFromKuwo {
             String musicName = music.get("name").toString();
             String singerName = music.get("artist").toString();
             String album = music.get("album").toString();
-            String musicUrl = getUrlById(rid);
 
-            Music musicInfo = new Music(rid,musicName,singerName,musicUrl,pic,time,album);
+            Music musicInfo = new Music(rid,musicName,singerName,pic,time,album);
+
             musicList.add(musicInfo);
-
-            System.out.println("musicInfo--"+musicInfo);
         }
         return musicList;
     }
